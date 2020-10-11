@@ -13,7 +13,7 @@ def fetch_movies_url
 end
 
 
-def scrape_movies(url)
+def scrape_movie(url)
   response = open(url, "Accept-Language" => "en").read
   html_doc = Nokogiri::HTML(response)
   {
@@ -24,3 +24,20 @@ def scrape_movies(url)
     year: html_doc.search('h1 #titleYear').text.match(/\d{4}/)[0].to_i
   }
 end
+
+
+def write_yaml(movies)
+  File.open('movies.yml', 'wb+') do |f| 
+    f.write(movies.to_yaml)
+  end
+end
+
+def save_top_movies
+  puts "Starting scraper"
+  urls = fetch_movies_url
+  movies = urls.map { |url| scrape_movie(url) }
+  write_yaml({movies: movies})
+  puts "Movies saved with success"
+end
+
+save_top_movies

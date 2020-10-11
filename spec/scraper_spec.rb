@@ -37,7 +37,7 @@ end
 describe "#scrape_movie" do
   it "expect to include The Dark Night Movie" do
     dark_night_url = 'https://www.imdb.com/title/tt0468569/'
-    dark_night = scrape_movies(dark_night_url)
+    dark_night = scrape_movie(dark_night_url)
     expected = {
        cast: [ "Christian Bale", "Heath Ledger", "Aaron Eckhart" ],
        director: "Christopher Nolan",
