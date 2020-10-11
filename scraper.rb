@@ -14,15 +14,12 @@ end
 
 
 def scrape_movies(url)
-  response = open(url).read
+  response = open(url, "Accept-Language" => "en").read
   html_doc = Nokogiri::HTML(response)
-  
-  binding.pry
-  
   {
     cast: html_doc.search('.cast_list .primary_photo+td a').first(3).map {|tag| tag.text.strip},
     director: html_doc.search("h4:contains('Director:') + a").text,
-    storyline: html_doc.search('.ipc-html-content div').text.strip,
+    storyline: html_doc.search('.summary_text').text.strip,
     title: html_doc.search('h1').text.match(/(?<title>.*)[[:space:]]\((?<year>\d{4})\)/)[:title],
     year: html_doc.search('h1 #titleYear').text.match(/\d{4}/)[0].to_i
   }
